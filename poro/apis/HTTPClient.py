@@ -3,22 +3,6 @@ import asyncio
 import weakref
 
 
-workflow = """
-before:
-    - type corrector
-    - sql lookup
-
-if in sql:
-    - throw on error handler
-    - json handler
-    - objectify
-
-if not in sql:
-    - objectify
-    - rate limit checks
-"""
-
-
 class HTTPClient(object):
     def __init__(self, api_key, connector=None, loop=None,
                  early_handlers=[], late_handlers=[]):
