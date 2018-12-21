@@ -29,3 +29,18 @@ class Handler(object):
         :param response: the response received. This is a response from the Requests library
         """
         pass
+
+    async def before_static_request(self, url, query_params):
+        """
+        Called before a request to DataDragon is processed
+        :param url: The url that was requested
+        """
+        pass
+
+    async def after_static_request(self, url, response):
+        """
+        Called after a response is received and before it is returned to the user.
+        :param url: The url that was requested
+        :param response: the response received. This is a response from the Requests library
+        """
+        pass

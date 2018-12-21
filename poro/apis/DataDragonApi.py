@@ -41,8 +41,8 @@ class DataDragonApi(object):
     async def versions_for_region(self, region):
         region = re.sub(r"\d", "", region)
         url, query = DataDragonUrls.versions(region=region)
-        return await self._http_client.raw_request_static(url, query)
+        return await self._http_client._request_static(url, query)
 
     async def _request(self, endpoint, version, locale):
         url, query = endpoint(version=version, locale=locale if locale else "en_US")
-        return await self._http_client.raw_request_static(url, query)
+        return await self._http_client._request_static(url, query)
