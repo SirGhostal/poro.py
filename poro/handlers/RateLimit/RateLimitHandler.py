@@ -15,7 +15,7 @@ class RateLimitHandler(Handler):
         self._limiters = [
             ApplicationRateLimiter(loop=self.loop),
             MethodRateLimiter(loop=self.loop),
-            # ServiceRateLimiter(loop=self.loop)
+            ServiceRateLimiter(loop=self.loop)
         ]
 
     async def before_request(self, region, endpoint_name, method_name, url, query_params):

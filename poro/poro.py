@@ -20,19 +20,13 @@ from .handlers.RateLimit import RateLimitHandler
 
 class Poro:
     def __init__(self, api_key, connector=None, loop=None,
-                 early_handlers=None, late_handlers=None, rate_limit_handler=None):
+                 early_handlers=None, late_handlers=None):
         self.api_key = api_key
         self.loop = asyncio.get_event_loop() if loop is None else loop
 
-        if not early_handlers:
-            early_handlers = self.default_early_handlers
-        if not late_handlers:
-            late_handlers = self.default_late_handlers
-
-        if not rate_limit_handler:
-            limiter = RateLimitHandler(loop=self.loop)
-            early_handlers.append(limiter)
-            late_handlers.insert(0, limiter)
+        self._rate_limiter = RateLimitHandler(loop=self.loop)
+        early_handlers = self.default_early_handlers if not early_handlers else early_handlers
+        late_handlers = self.default_late_handlers if not late_handlers else late_handlers
 
         self._http_client = HTTPClient(
             api_key, connector=connector, loop=self.loop,
@@ -54,11 +48,13 @@ class Poro:
     def default_early_handlers(self):
         return [
             TypeCorrectorHandler(loop=self.loop),
+            self._rate_limiter
         ]
     
     @property
     def default_late_handlers(self):
         return [
+            self._rate_limiter,
             ThrowOnErrorHandler(loop=self.loop),
             JsonHandler(loop=self.loop)
         ]
