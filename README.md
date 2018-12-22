@@ -1,4 +1,4 @@
-# Poro
+# PoroPy
 An async python framework for communicating with the Riot API in python. Originally forked from riotwatcher's library.
 
 Under heavy development so expect major changes in the upcomming time.
